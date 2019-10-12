@@ -14,7 +14,7 @@
         "static-stories": "build-storybook -c .storybook -o .out"
     },
     "dependencies": {
-        "moment": "^2.24.0",
+        "date-fns": "^2.4.1",
         "sirv-cli": "^0.4.4"
     },
     "devDependencies": {

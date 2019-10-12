@@ -1,5 +1,5 @@
-import { readable, writable } from 'svelte/store';
-import moment from 'moment';
+import { readable, writable, derived } from 'svelte/store';
+import { getDaysInMonth, getDay, format, addDays, addMonths } from 'date-fns';
 
 function createReadable(init) {
   const { subscribe, set, update } = readable(init);
@@ -51,6 +51,20 @@ export const filters = createReadable([
 ]);
 
 export const tasks = createWritable([
-  { description: "Order contacts", date: moment().format() }
+  { description: "Order contacts", date: null }
 ], {
 });
+
+export const time = readable(new Date(), function start(set) {
+	const interval = setInterval(() => {
+		set(new Date());
+	}, 1000);
+
+	return function stop() {
+		clearInterval(interval);
+	};
+});
+
+export const today = derived(time, $time => format($time, "E"));
+export const tomorrow = derived(time, $time => format(addDays($time, 1), "E"));
+export const dayAfterTomorrow = derived(time, $time => format(addDays($time, 2), "E"));

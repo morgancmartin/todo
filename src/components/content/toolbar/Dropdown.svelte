@@ -8,10 +8,7 @@
 
  let isOpen = false;
 
- function open() {
-   console.log("opening!");
-   isOpen = !isOpen;
- };
+ function open() { isOpen = !isOpen; };
 </script>
 
 <style>

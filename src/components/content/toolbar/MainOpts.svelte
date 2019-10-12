@@ -1,7 +1,7 @@
 <script>
- import InboxIcon from './icons/InboxIcon.svelte';
- import TodayIcon from './icons/TodayIcon.svelte';
- import NextIcon from './icons/NextIcon.svelte';
+ import InboxIcon from '../../icons/InboxIcon.svelte';
+ import TodayIcon from '../../icons/TodayIcon.svelte';
+ import NextIcon from '../../icons/NextIcon.svelte';
  import { views, selectedView } from '../../../stores.js';
 
  function isSelectedView(view) { return view === $selectedView; };
