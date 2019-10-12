@@ -1,34 +1,22 @@
-import { writable } from 'svelte/store';
+import { readable, writable } from 'svelte/store';
 import moment from 'moment';
 
-function createCount() {
-  const { subscribe, set, update } = writable(0);
-
-  return {
-    subscribe,
-    increment: () => update(n => n + 1),
-    decrement: () => update(n => n - 1),
-    reset: () => set(0)
-  };
-}
-// export const count = createCount(0);
-
 function createReadable(init) {
-  const { subscribe, set, update } = writable(init);
+  const { subscribe, set, update } = readable(init);
 
   return {
     subscribe,
   };
 };
 
-function createWritable(init) {
+function createWritable(init, methods) {
   const { subscribe, set, update } = writable(init);
 
-  return {
+  return Object.assign({
     subscribe,
     set,
     update
-  };
+  }, (methods || {}));
 };
 
 let viewsVal = [
@@ -62,6 +50,7 @@ export const filters = createReadable([
   {name: "No due date", color: "blue"}
 ]);
 
-export const tasks = createReadable([
-  {description: "Order contacts", date: moment().format() }
-]);
+export const tasks = createWritable([
+  { description: "Order contacts", date: moment().format() }
+], {
+});

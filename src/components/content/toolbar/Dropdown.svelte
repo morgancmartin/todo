@@ -1,16 +1,17 @@
 <script>
-	import { slide } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
+ import { slide } from 'svelte/transition';
+ import { quintOut } from 'svelte/easing';
+ import Plus from '../../icons/Plus.svelte';
 
-  export let title = "";
-  export let count = 0;
+ export let title = "";
+ export let count = 0;
 
-  let isOpen = false;
+ let isOpen = false;
 
-  function open() {
-    console.log("opening!");
-    isOpen = !isOpen;
-  };
+ function open() {
+   console.log("opening!");
+   isOpen = !isOpen;
+ };
 </script>
 
 <style>
@@ -53,21 +54,7 @@
       </p>
     </button>
     <aside class="flex w-1/5 items-center content-center">
-      <button
-        data-track="navigation|projects_quick_add"
-        type="button"
-        class="">
-        <svg
-          width="13"
-          height="13">
-          <path d="M6 6V.5a.5.5 0 0 1 1 0V6h5.5a.5.5 0 1 1 0 1H7v5.5a.5.5 0 1 1-1 0V7H.5a.5.5
-                   0 0 1 0-1H6z"
-                fill="currentColor"
-                fill-rule="evenodd">
-
-          </path>
-        </svg>
-      </button>
+      <Plus />
     </aside>
   </header>
 
