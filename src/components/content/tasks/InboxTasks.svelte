@@ -3,5 +3,5 @@
  import Calendar from './calendar/Calendar.svelte';
 </script>
 
-<Calendar />
+<!-- <Calendar /> -->
 <!-- <TaskList /> -->

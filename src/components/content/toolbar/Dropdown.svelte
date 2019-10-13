@@ -2,6 +2,7 @@
  import { slide } from 'svelte/transition';
  import { quintOut } from 'svelte/easing';
  import Plus from '../../icons/Plus.svelte';
+ import RightCaret from '../../icons/RightCaret.svelte';
 
  export let title = "";
  export let count = 0;
@@ -12,41 +13,41 @@
 </script>
 
 <style>
+ .dropdown {
+   padding: 5px 16px 5px 5px;
+ }
+
  .chevron {
-   transform: rotate(-90deg);
+   transform: rotate(0deg);
    transition-property: transform;
-   transition-duration: .2s;
+   transition-duration: .4s;
  }
 
  .chevron.open {
-   transform: rotate(0deg);
+   transform: rotate(90deg);
+ }
+
+ p {
+   font-size: 14px;
+   color: #333;
+ }
+
+ header {
+   border-bottom: 1px solid #f1f1f1;
  }
 </style>
 
-<div class="flex flex-col w-full">
-  <header class="flex w-4/5 justify-between">
+<div class="dropdown flex flex-col w-full">
+  <header class="flex justify-between">
     <button
       type="button"
       class="flex w-4/5"
       on:click={open}>
       <div
-        class="h-full w-1/5 self-center">
-        <svg
-          width="16px"
-          height="16px"
-          viewBox="0 0 16 16"
-          class="chevron {isOpen ? 'open' : ''}">
-          <g
-            transform="translate(-266, -17)"
-            fill="#777777">
-            <path d="M280,22.7581818 L279.1564,22 L273.9922,26.506 L273.4414,26.0254545
-                     L273.4444,26.0281818 L268.8562,22.0245455 L268,22.7712727
-                     C269.2678,23.878 272.8084,26.9674545 273.9922,28 C274.8718,27.2330909
-                     274.0144,27.9809091 280,22.7581818" />
-          </g>
-        </svg>
+        class="h-full self-center chevron {isOpen ? 'open' : ''}">
+        <RightCaret />
       </div>
-      <p class="w-4/5 text-left">
+      <p class="ml-2 text-left font-bold">
         {title}
       </p>
     </button>
@@ -57,12 +58,12 @@
 
   {#if isOpen && count}
   <ul
-    class="w-4/5"
-    transition:slide="{{duration: 80}}">
+    class="pl-1 mt-4 w-4/5"
+    transition:slide="{{duration: 400}}">
     <slot></slot>
   </ul>
   {:else if isOpen}
-  <p transition:slide="{{duration: 80}}">
+  <p transition:slide="{{duration: 400}}">
     Your list of {title} will appear here
   </p>
   {/if}

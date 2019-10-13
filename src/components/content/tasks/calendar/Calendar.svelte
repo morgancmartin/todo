@@ -51,21 +51,27 @@
     <input type="text" placeholder="Type a due date">
   </div>
   <div class="w-full">
-    <div class="flex flex-row">
-      <TodayIcon />
-      <p>Today</p>
+    <button class="flex flex-row justify-between w-full">
+      <div class="flex flex-row">
+        <TodayIcon />
+        <p>Today</p>
+      </div>
       <p>{$today}</p>
-    </div>
-    <div class="flex flex-row">
-      <TomorrowIcon />
-      <p>Tomorrow</p>
+    </button>
+    <button class="flex flex-row justify-between w-full">
+      <div class="flex flex-row">
+        <TomorrowIcon />
+        <p>Tomorrow</p>
+      </div>
       <p>{$tomorrow}</p>
-    </div>
-    <div class="flex flex-row">
-      <NextWeekIcon />
-      <p>Next week</p>
+    </button>
+    <button class="flex flex-row justify-between w-full">
+      <div class="flex flex-row">
+        <NextWeekIcon />
+        <p>Next week</p>
+      </div>
       <p>{$dayAfterTomorrow}</p>
-    </div>
+    </button>
   </div>
   <div class="border-t {borderColor}">
     <div class="flex flex-col">
@@ -89,7 +95,9 @@
         <p class="font-bold">{month.abrv}</p>
         <div class="flex flex-row w-full flex-wrap">
           {#each month.days as day}
-            <p class="w-1/7 text-center">{day.ofMonth}</p>
+            <button class="w-1/7 text-center">
+              <p class="">{day.ofMonth}</p>
+            </button>
           {/each}
         </div>
       {/each}

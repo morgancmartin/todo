@@ -7,20 +7,42 @@
  function isSelectedView(view) { return view === $selectedView; };
 </script>
 
-<div class="flex flex-col w-full h-24">
+<style>
+ p {
+   font-size: 14px;
+   color: #333;
+ }
+
+ button {
+   min-height: 24px;
+   padding: 5px 16px 5px 5px;
+ }
+
+ div {
+   color: #555;
+ }
+</style>
+
+<div class="container flex flex-col w-full">
   {#each $views as view (view.name)}
-  <button class="flex h-1/3 w-full {view === $selectedView ? 'bg-white' : ''}"
-          on:click="{e => $selectedView = view}">
-    {#if view.name === 'inbox'}
-    <InboxIcon />
-    {:else if view.name === 'today'}
-    <TodayIcon />
-    {:else if view.name === 'next-7-days'}
-    <NextIcon />
-    {/if}
-    <p class="flex {view === $selectedView ? 'font-bold' : ''}">
-      {view.title}
-    </p>
-  </button>
+    <button class="flex w-full items-center {view === $selectedView ? 'bg-white' : ''}"
+            on:click="{e => $selectedView = view}">
+      {#if view.name === 'inbox'}
+        <div>
+          <InboxIcon />
+        </div>
+      {:else if view.name === 'today'}
+        <div>
+          <TodayIcon />
+        </div>
+      {:else if view.name === 'next-7-days'}
+        <div>
+          <NextIcon />
+        </div>
+      {/if}
+      <p class="flex ml-2 {view === $selectedView ? 'font-bold' : ''}">
+        {view.title}
+      </p>
+    </button>
   {/each}
 </div>

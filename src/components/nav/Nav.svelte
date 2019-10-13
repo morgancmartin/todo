@@ -2,9 +2,15 @@
  export let menuItems = [];
 </script>
 
-<nav class="flex items-center justify-center flex-wrap bg-primaryGrey p-2">
+<style>
+ nav {
+   padding: 0.6rem;
+ }
+</style>
+
+<nav class="flex items-center justify-center flex-wrap bg-primaryGrey">
   <div class="w-7/12">
-    <div class="flex items-center flex-shrink-0 text-white">
+    <div class="flex items-center flex-shrink-0 text-white ml-1">
       <svg
         class="fill-current"
         width="24"

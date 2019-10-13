@@ -8,7 +8,7 @@
     ];
 </script>
 
-<div class="flex flex-col h-screen w-screen bg-secondaryTan">
+<div class="flex flex-col h-screen w-screen bg-secondaryTan overflow-hidden">
   <Nav {menuItems} />
   <Content />
 </div>
