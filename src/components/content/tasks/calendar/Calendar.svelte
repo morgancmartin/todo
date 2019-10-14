@@ -14,7 +14,8 @@
    format,
    getDay,
    isSameWeek,
-   isSameDay
+   isSameDay,
+   isBefore
  } from 'date-fns';
 
  let dispatch = createEventDispatcher();
@@ -53,12 +54,14 @@
    return months;
  };
 
- function ifSameDay(first, second) {
-   return isSameDay(first, second) ? 'cur-day font-bold' : '';
- };
-
- function ifSDay(day) {
-   return day === 0 || day === 6 ? 's-day' : '';
+ function dayClass(day, time) {
+   if (isSameDay(day.date, time)) {
+     return  'cur-day font-bold';
+   } else if (isBefore(day.date, time)) {
+     return 'text-gray-400';
+   } else if (day.day === 0 || day.day === 6) {
+     return 's-day';
+   }
  };
 
  function setDay(day) {
@@ -258,9 +261,9 @@
             {#if day.isSpacer}
               <div class="w-1/7"></div>
             {:else}
-              <button class="w-1/7 text-center {ifSameDay($time, day.date)}"
+              <button class="w-1/7 text-center"
                       on:click|stopPropagation={e => setDay(day)}>
-                <p class="{ifSDay(day.day)}">{day.ofMonth}</p>
+                <p class="{dayClass(day, $time)}">{day.ofMonth}</p>
               </button>
             {/if}
           {/each}
