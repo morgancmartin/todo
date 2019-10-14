@@ -52,7 +52,9 @@
       </p>
     </button>
     <aside class="flex w-1/5 items-center content-center">
-      <Plus />
+      <button>
+        <Plus />
+      </button>
     </aside>
   </header>
 
