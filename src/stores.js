@@ -67,4 +67,3 @@ export const time = readable(new Date(), function start(set) {
 
 export const today = derived(time, $time => format($time, "E"));
 export const tomorrow = derived(time, $time => format(addDays($time, 1), "E"));
-export const dayAfterTomorrow = derived(time, $time => format(addDays($time, 2), "E"));

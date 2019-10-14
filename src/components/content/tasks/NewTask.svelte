@@ -13,6 +13,18 @@
 
  function toggle() { isOpen = !isOpen; }
  function openCalendar() { calendarIsOpen = true; }
+
+ function handleNewDay(event) {
+   let day = event.detail.day;
+   calendarIsOpen = false;
+   console.log("got new day!", day, calendarIsOpen);
+ };
+
+ function handleNewTime(event) {
+   let time = event.detail.time;
+   console.log("got new time!", time);
+ };
+
 </script>
 
 <style>
@@ -67,10 +79,10 @@
         placeholder="e.g. Buy gift tomorrow at 6pm p1 #Errands">
       <button class="w-3/12 flex items-center border-l relative"
               on:click={openCalendar}>
-        <p class="ml-2 text-gray-600">Schedule</p>
+        <input type="text" class="ml-2 text-gray-600" placeholder="Schedule">
         {#if calendarIsOpen}
           <div class="absolute left-0">
-            <Calendar />
+            <Calendar on:newDay={handleNewDay} on:newTime={handleNewTime} />
           </div>
         {/if}
       </button>

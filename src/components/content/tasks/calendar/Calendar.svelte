@@ -1,11 +1,23 @@
 <script>
+ import { createEventDispatcher } from 'svelte';
  import TodayIcon from '../../../icons/TodayIcon.svelte';
  import TomorrowIcon from '../../../icons/TomorrowIcon.svelte';
  import NextWeekIcon from '../../../icons/NextWeekIcon.svelte';
  import LeftCaret from '../../../icons/LeftCaret.svelte';
  import RightCaret from '../../../icons/RightCaret.svelte';
- import { time, today, tomorrow, dayAfterTomorrow } from '../../../../stores.js';
- import { startOfMonth, addDays, addMonths, getDaysInMonth, format, getDay } from 'date-fns';
+ import { time, today, tomorrow } from '../../../../stores.js';
+ import {
+   startOfMonth,
+   addDays,
+   addMonths,
+   getDaysInMonth,
+   format,
+   getDay,
+   isSameWeek,
+   isSameDay
+ } from 'date-fns';
+
+ let dispatch = createEventDispatcher();
 
  function createDays(month) {
    var days = [];
@@ -17,6 +29,10 @@
        day: getDay(date)
      });
    };
+   var firstDay = days[0];
+   for (var i = 0; i < firstDay.day; i++) {
+     days.unshift({isSpacer: true});
+   }
    return days;
  };
 
@@ -37,12 +53,61 @@
    return months;
  };
 
+ function ifSameDay(first, second) {
+   return isSameDay(first, second) ? 'cur-day font-bold' : '';
+ };
+
+ function ifSDay(day) {
+   return day === 0 || day === 6 ? 's-day' : '';
+ };
+
+ function setDay(day) {
+   dispatch("newDay", { day: day });
+ };
+
+ function setTime(time) {
+   dispatch("newTime", { day: day });
+ };
+
+ function setCurMonth(month) {
+   curMonth = `${month.abrv} ${month.year}`;
+ };
+
+ let dayAbbrvs = ["S", "M", "T", "W", "T", "F", "S"];
+
  let months = createMonths(60);
+ var firstMonth = months[0];
+
+ while (firstMonth.days[0].isSpacer || !isSameWeek(firstMonth.days[0].date, $time)) {
+   firstMonth.days.shift();
+ };
+
+ let curMonth;
+
+ let monthContainer = null;
+ let monthEls = {};
+ setCurMonth(firstMonth);
+
+ function updateCurMonth() {
+   Object.keys(monthEls).forEach(monthIndex => {
+     let el = monthEls[monthIndex];
+     let month = months[monthIndex];
+     let containerY = monthContainer.getBoundingClientRect().y;
+     let aboveCutoff = month.aboveCutoff;
+     let elY = el.getBoundingClientRect().y;
+     month.aboveCutoff = containerY > elY;
+     if (month.aboveCutoff && !aboveCutoff) {
+       setCurMonth(month);
+     } else if (aboveCutoff && !month.aboveCutoff) {
+       setCurMonth(months[monthIndex - 1]);
+     }
+   });
+ };
 
 </script>
 
 <style>
- .month::-webkit-scrollbar {
+ .month-container::-webkit-scrollbar {
    display: none;
  }
 
@@ -95,6 +160,10 @@
    color: gray;
  }
 
+ .control:hover {
+   background: #EAE8E8;
+ }
+
  .outline-circle {
    width: 8px;
    height: 8px;
@@ -111,6 +180,18 @@
    color: gray;
  }
 
+ .add-time {
+   font-size: 13px;
+   color: #3d3d3d;
+ }
+
+ .quick-opt > div > p {
+   font-size: 13px;
+ }
+
+ .cur-day {
+   color: #d8422d;
+ }
 </style>
 
 <div class="border w-56 bg-white">
@@ -139,14 +220,14 @@
         <div class="icon"><NextWeekIcon /></div>
         <p>Next week</p>
       </div>
-      <p class="abbrv">{$dayAfterTomorrow}</p>
+      <p class="abbrv">Mon</p>
     </button>
   </div>
   <div class="border-t">
     <div class="flex flex-col">
       <div class="header flex flex-row justify-between">
         <div class="flex items-center">
-          <p class="font-bold">Oct 2019</p>
+          <p class="font-bold">{curMonth}</p>
         </div>
         <div class="controls">
           <button class="control"><LeftCaret /></button>
@@ -157,31 +238,39 @@
         </div>
       </div>
       <div class="day-cols flex flex-row w-full">
-        <div class="day-col w-1/7 text-center">S</div>
-        <div class="day-col w-1/7 text-center">M</div>
-        <div class="day-col w-1/7 text-center">T</div>
-        <div class="day-col w-1/7 text-center">W</div>
-        <div class="day-col w-1/7 text-center">T</div>
-        <div class="day-col w-1/7 text-center">F</div>
-        <div class="day-col w-1/7 text-center">S</div>
+        {#each dayAbbrvs as dayAbbrv}
+          <div class="day-col w-1/7 text-center">{dayAbbrv}</div>
+        {/each}
       </div>
     </div>
-    <div class="month flex flex-col w-full h-32 overflow-y-auto">
-      {#each months as month}
-        <div class="month-abbrv-container">
-          <p class="month-abbrv text-left font-bold">{month.abrv}</p>
-        </div>
+    <div bind:this={monthContainer}
+         on:scroll={updateCurMonth}
+         class="month-container flex flex-col w-full h-32 overflow-y-auto">
+      {#each months as month, monthIndex}
+        {#if monthIndex}
+          <div bind:this={monthEls[monthIndex]}
+               class="month-abbrv-container">
+            <p class="month-abbrv text-left font-bold">{month.abrv}</p>
+          </div>
+        {/if}
         <div class="days flex flex-row w-full flex-wrap">
           {#each month.days as day}
-            <button class="w-1/7 text-center">
-              <p class="{day.day === 0 || day.day === 6 ? 's-day' : ''}">{day.ofMonth}</p>
-            </button>
+            {#if day.isSpacer}
+              <div class="w-1/7"></div>
+            {:else}
+              <button class="w-1/7 text-center {ifSameDay($time, day.date)}"
+                      on:click|stopPropagation={e => setDay(day)}>
+                <p class="{ifSDay(day.day)}">{day.ofMonth}</p>
+              </button>
+            {/if}
           {/each}
         </div>
       {/each}
     </div>
   </div>
-  <div class="w-full border-t">
-    <p>+ Add time</p>
+  <div class="w-full flex justify-start p-2 border-t">
+    <button class="add-time font-bold ml-2">
+      <p>+ Add time</p>
+    </button>
   </div>
 </div>
