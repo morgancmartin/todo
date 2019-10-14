@@ -51,7 +51,7 @@ export const filters = createReadable([
 ]);
 
 export const tasks = createWritable([
-  { description: "Order contacts", date: null }
+  { description: "Order contacts", date: null, id: 0 }
 ], {
 });
 

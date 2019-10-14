@@ -1,5 +1,7 @@
 <script>
  import NewTask from './NewTask.svelte';
+ import Task from './Task.svelte';
+ import { tasks } from '../../../stores.js';
 </script>
 
 <style>
@@ -9,5 +11,8 @@
 </style>
 
 <div>
+  {#each $tasks as task (task.id)}
+    <Task task={task} />
+  {/each}
   <NewTask />
 </div>

@@ -64,8 +64,8 @@
    }
  };
 
- function setDay(day) {
-   dispatch("newDay", { day: day });
+ function setDay(day, month) {
+   dispatch("newDay", { day: day, month: month });
  };
 
  function setTime(time) {
@@ -262,7 +262,7 @@
               <div class="w-1/7"></div>
             {:else}
               <button class="w-1/7 text-center"
-                      on:click|stopPropagation={e => setDay(day)}>
+                      on:click|stopPropagation={e => setDay(day, month)}>
                 <p class="{dayClass(day, $time)}">{day.ofMonth}</p>
               </button>
             {/if}

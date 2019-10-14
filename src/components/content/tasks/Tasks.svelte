@@ -5,7 +5,7 @@
  import NextTasks from './NextTasks.svelte';
 </script>
 
-<div class="flex flex-col w-7/12 h-full bg-white pt-8">
+<div class="flex flex-col w-8/12 h-full bg-white pt-8">
   <h2 class="inline text-xl font-bold ml-1">
     {$selectedView.title}
   </h2>

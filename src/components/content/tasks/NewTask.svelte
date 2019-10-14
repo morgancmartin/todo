@@ -2,8 +2,24 @@
  import Plus from '../../icons/Plus.svelte';
  import Calendar from './calendar/Calendar.svelte';
 
- let hovering;
 
+ function toggle() { isOpen = !isOpen; }
+ function openCalendar() { calendarIsOpen = true; }
+
+ function handleNewDay(event) {
+   let day = event.detail.day;
+   let month = event.detail.month;
+   calendarIsOpen = false;
+   console.log("got new day!", day, calendarIsOpen);
+   calVal = `${month.abrv} ${day.ofMonth}`;
+ };
+
+ function handleNewTime(event) {
+   let time = event.detail.time;
+   console.log("got new time!", time);
+ };
+
+ let hovering;
  let plusHoverClasses = 'bg-gray-800 text-white';
 
  /* let isOpen = false; */
@@ -11,19 +27,7 @@
  /* let calendarIsOpen = false; */
  let calendarIsOpen = true;
 
- function toggle() { isOpen = !isOpen; }
- function openCalendar() { calendarIsOpen = true; }
-
- function handleNewDay(event) {
-   let day = event.detail.day;
-   calendarIsOpen = false;
-   console.log("got new day!", day, calendarIsOpen);
- };
-
- function handleNewTime(event) {
-   let time = event.detail.time;
-   console.log("got new time!", time);
- };
+ let calVal;
 
 </script>
 
@@ -79,10 +83,14 @@
         placeholder="e.g. Buy gift tomorrow at 6pm p1 #Errands">
       <button class="w-3/12 flex items-center border-l relative"
               on:click={openCalendar}>
-        <input type="text" class="ml-2 text-gray-600" placeholder="Schedule">
+        <input bind:value={calVal}
+               type="text"
+               class="ml-2 w-full placeholder-gray-600"
+               placeholder="Schedule">
         {#if calendarIsOpen}
           <div class="absolute left-0">
-            <Calendar on:newDay={handleNewDay} on:newTime={handleNewTime} />
+            <Calendar on:newDay={handleNewDay}
+                      on:newTime={handleNewTime} />
           </div>
         {/if}
       </button>
