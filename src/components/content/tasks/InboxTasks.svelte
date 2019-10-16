@@ -1,6 +1,7 @@
 <script>
  import TaskList from './TaskList.svelte';
  import Calendar from './calendar/Calendar.svelte';
+ import { inboxTasks } from '../../../stores.js';
 </script>
 
-<TaskList />
+<TaskList tasks={$inboxTasks} />

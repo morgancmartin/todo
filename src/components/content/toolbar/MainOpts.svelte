@@ -25,7 +25,8 @@
 
 <div class="container flex flex-col w-full">
   {#each $views as view (view.name)}
-    <button class="flex w-full items-center {view === $selectedView ? 'bg-white' : ''}"
+    <button class="flex w-full items-center"
+            class:bg-white={view === $selectedView}
             on:click="{e => $selectedView = view}">
       {#if view.name === 'inbox'}
         <div>
@@ -40,7 +41,8 @@
           <NextIcon />
         </div>
       {/if}
-      <p class="flex ml-2 {view === $selectedView ? 'font-bold' : ''}">
+      <p class="flex ml-2"
+         class:font-bold={view === $selectedView}>
         {view.title}
       </p>
     </button>

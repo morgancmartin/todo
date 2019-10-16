@@ -23,7 +23,7 @@
    transition-duration: .4s;
  }
 
- .chevron.open {
+ .chevron.isOpen {
    transform: rotate(90deg);
  }
 
@@ -43,8 +43,8 @@
       type="button"
       class="flex w-4/5"
       on:click={open}>
-      <div
-        class="h-full self-center chevron {isOpen ? 'open' : ''}">
+      <div class="h-full self-center chevron"
+           class:isOpen >
         <RightCaret />
       </div>
       <p class="ml-2 text-left font-bold">
@@ -57,7 +57,6 @@
       </button>
     </aside>
   </header>
-
   {#if isOpen && count}
   <ul
     class="pl-1 mt-4 w-4/5"

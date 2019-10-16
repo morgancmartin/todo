@@ -16,7 +16,7 @@ function createWritable(init, methods) {
     subscribe,
     set,
     update
-  }, (methods || {}));
+  }, ((methods && methods(set, update, init)) || {}));
 };
 
 let viewsVal = [
@@ -50,10 +50,39 @@ export const filters = createReadable([
   {name: "No due date", color: "blue"}
 ]);
 
-export const tasks = createWritable([
-  { description: "Order contacts", date: null, id: 0 }
-], {
+export const tasks = createWritable([], (set, update) => {
+  return {
+    addTask: (task) => {
+      task = {
+        description: task.description,
+        date: task.date,
+        id: tasks.length,
+        completed: task.completed,
+        complete: () => {
+          task.completed = true;
+          update(tasks => [...tasks]);
+          console.log(tasks);
+        }
+      };
+      update(tasks => [...tasks, task]);
+    }
+  };
 });
+
+tasks.addTask({
+  description: "Order contacts",
+  date: null,
+  id: 0,
+  completed: false
+});
+
+export let inboxTasks = derived(
+  tasks,
+  $tasks => $tasks.filter(task => {
+    return !task.completed;
+  })
+);
+
 
 export const time = readable(new Date(), function start(set) {
 	const interval = setInterval(() => {
